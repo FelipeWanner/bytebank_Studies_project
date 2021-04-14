@@ -1,13 +1,12 @@
 import { Cliente } from "./Cliente.js";
+import { Conta } from "./Conta.js";
 
-export class ContaCorrente {
+export class ContaCorrente extends Conta{
     
     static numeroDeContas = 0;
 
-    constructor(agencia, cliente){
-        this.agencia = agencia;
-        this.cliente = cliente;
-        this._saldo = 0;
+    constructor(saldo, cliente, agencia){
+        super(saldo, cliente, agencia);
         ContaCorrente.numeroDeContas += 1;
     }
     
@@ -22,22 +21,10 @@ export class ContaCorrente {
         return this._cliente;
     }
 
-    depositar(valor) {
-        if (valor <= 0) {
-            return;
-        }
-        this._saldo += valor;
-    }
-
+    //esse metodo está sobreescrevendo o metodo de mesmo nome da classe mae(Conta). Mas continua retornando 
+    //um metodo privado (_sacar) normalmente.
     sacar(valor) {
-        if (this._saldo >= valor) {
-            this._saldo -= valor;
-            return valor;
-        }
-    }
-
-    transferir(valor, conta){
-        const valorSacado = this.sacar(valor);
-        conta.depositar(valorSacado);
+        let taxa = 1.1;
+        return super._sacar(valor, taxa);
     }
 }
